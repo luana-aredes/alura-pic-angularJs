@@ -5,23 +5,30 @@
 //convenção e boa prática: Nome do controller começa com letra MAISCULA e usa-se camelCase.
 
 //$scope indica 
-angular.module('alurapic').controller('FotosController', function($scope) {
 
-    $scope.fotos = [
-        {
-            titulo: 'Leão',
-            url : 'http://www.fundosanimais.com/Minis/leoes.jpg'
-        },
+//Uma característica desse sistema é que toda injeção é feita pelo nome do parâmetro, por isso é muito importante passarmos os parâmetros nomeados de acordo com o serviço ou recurso do Angular que desejamos usar.
+angular.module('alurapic').controller('FotosController', function($scope, $http) {
 
-        {
-            titulo: 'Leão2',
-            url : 'http://www.fundosanimais.com/Minis/leoes.jpg'
-        },
+    $scope.fotos = [];
 
-        {
-            titulo: 'Leão3',
-            url : 'http://www.fundosanimais.com/Minis/leoes.jpg'
-        }
-    ];
+    //Dessa forma o parametro já é o  conjunto de dados retornados da api (data), não precisa pegar o retorno como feito em baixo.
+    
+    //integração com o back-end
+    $http.get('v1/fotos')
+    .success(function(fotos){
+       $scope.fotos = fotos; 
+    })
+    .error(function(erro){
+        console.log(erro);
+    })
+
+
+    //var promisse = $http.get('v1/fotos')
+    // promisse.then(function(retorno) {
+    //     $scope.fotos = retorno.data;
+    // }).catch(function(error){
+    //     console.log(error)
+    // })
 
 });
+
