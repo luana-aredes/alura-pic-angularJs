@@ -14,12 +14,24 @@ angular.module('minhasDiretivas', [])
         //Se o nome da propriedade for igual ao nome do atributo, é comum colocarmos somente o "@". O @ significa que o valor que estiver dentro de titulo="Cambachirra", será passado como uma string para o titulo.
     };
     ddo.transclude = true;
-    //o transclude indidca para não sobescrever o html principal.  
+    //o transclude indica para não sobescrever o html principal.  
     //Esta pegando o template da pagina meu-painel
     ddo.templateUrl = 'js/directives/meu-painel.html';
 
     return ddo;
 })
+.directive('minhaFoto', function() {
+    var ddo = {};
 
-//<meu-painel titulo="Cambachirra"> <meu-painel>
-//Do módula podemos criar controllers e tambem diretivas, como foi o caso.
+    ddo.restrict = "AE";
+
+    ddo.scope = {
+        titulo: '@',
+        url: '@' 
+    };
+
+    ddo.template = '<img class="img-responsive center-block" src="{{url}}" alt="{{titulo}}">';
+
+    return ddo;
+})
+
