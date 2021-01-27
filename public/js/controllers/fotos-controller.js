@@ -15,34 +15,28 @@
     // })
 
 //Uma característica desse sistema é que toda injeção é feita pelo nome do parâmetro, por isso é muito importante passarmos os parâmetros nomeados de acordo com o serviço ou recurso do Angular que desejamos usar.
-angular.module('alurapic').controller('FotosController', function($scope, $http) {
+angular.module('alurapic').controller('FotosController', function($scope, recursoFoto) {
 
     $scope.fotos = [];
     $scope.filtro = '';
     $scope.mensgaem = '';
 
-    //Dessa forma o parametro já é o  conjunto de dados retornados da api (data), não precisa pegar o retorno como feito em baixo.
-    //integração com o back-end
-    $http.get('v1/fotos')
-    .success(function(fotos){
-       $scope.fotos = fotos; 
-    })
-    .error(function(erro){
+    recursoFoto.query(function(fotos) {
+        $scope.fotos = fotos;
+    }, function(erro) {
         console.log(erro);
-    })
+    });
 
-    $scope.remover = function remover(foto) {
-        $http.delete('v1/fotos/' + foto._id)
-        .success(function() {
+    $scope.remover = function(foto) {
+
+        recursoFoto.delete({ fotoId: foto._id }, function() {
             var indiceFoto = $scope.fotos.indexOf(foto);
             $scope.fotos.splice(indiceFoto, 1);
             $scope.mensagem = 'Foto' + foto.titulo + 'foi removida com sucesso';
-        })
-        .error(function() {
-             console.log(error);
-             $scope.mensagem = 'Não foi possível remover a foto' + foto.titulo;
+        }, function(erro) {
+            console.log(erro);
+            $scope.mensagem = 'Não foi possível remover a foto' + foto.titulo;
         });
-     }
-
+    }
 });
 
